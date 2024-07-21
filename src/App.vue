@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/modules/user'
+import { useCounterStore } from '@/stores/modules/counter'
 
 const route = useRoute()
 const router = useRouter()
@@ -12,6 +13,7 @@ const goList = () => {
 }
 
 const userStore = useUserStore()
+const counterStore = useCounterStore()
 </script>
 
 <template>
@@ -21,6 +23,11 @@ const userStore = useUserStore()
     <p>{{ userStore.token }}</p>
     <el-button @click="userStore.setToken('test')">LogIn</el-button>
     <el-button @click="userStore.removeToken()">exit</el-button>
+  </div>
+  <div>
+    <el-button @click="counterStore.addCount()">Add</el-button>
+    <el-button @click="counterStore.subCount()">Sub</el-button>
+    <p>{{ counterStore.count }}</p>
   </div>
 </template>
 
