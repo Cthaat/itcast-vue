@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "allowJs": true,
+    "target": "es5",
+    "lib": [
+      "dom",
+      "esnext",
+      "es2015.promise"
+    ]
+  },
+  "exclude": ["node_modules", "dist"]
+}
