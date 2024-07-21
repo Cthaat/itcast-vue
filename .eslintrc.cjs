@@ -17,9 +17,10 @@ module.exports = {
       {
         singleQuote: true,
         semi: false,
-        printWidth: 80,
+        printWidth: 100,
         trailingComma: 'none',
-        endOfLine: 'auto'
+        endOfLine: 'auto',
+        tabWidth: 2
       }
     ],
     'vue/multi-word-component-names': [
