@@ -2,6 +2,10 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 const isRegister = ref(true)
+import { userRegisterService } from '@/api/user'
+
+const form = ref(null)
+
 const formModel = ref({
   username: '',
   password: '',
@@ -10,11 +14,11 @@ const formModel = ref({
 const rules = ref({
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 10, message: '用户名长度在 3 到 10 个字符', trigger: 'blur' }
+    { min: 1, max: 10, message: '用户名长度在 1 到 10 个字符', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 16, message: '密码长度在 6 到 16 个字符', trigger: 'blur' }
+    { patton: /^\S{6,15}$/, message: '密码长度在 6 到 15 个非空字符', trigger: 'blur' }
   ],
   repassword: [
     { required: true, message: '请再次输入密码', trigger: 'blur' },
@@ -31,6 +35,14 @@ const rules = ref({
     }
   ]
 })
+
+const register = async () => {
+  await form.value.validate()
+  console.log('register')
+  await userRegisterService(formModel.value)
+  console.log('register success')
+  isRegister.value = false
+}
 </script>
 
 <template>
@@ -72,7 +84,9 @@ const rules = ref({
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space> 注册 </el-button>
+          <el-button @click="register" class="button" type="primary" auto-insert-space>
+            注册
+          </el-button>
         </el-form-item>
         <el-form-item class="flex">
           <el-link type="info" :underline="false" @click="isRegister = false"> ← 返回 </el-link>
