@@ -79,9 +79,7 @@ const handleCommand = async (command) => {
     <el-container>
       <el-header>
         <div>
-          <strong>{{
-            userStore.user.nickname || userStore.user.username
-          }}</strong>
+          <strong>{{ userStore.user.nickname || userStore.user.username }}</strong>
         </div>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <span class="el-dropdown__box">
@@ -90,12 +88,8 @@ const handleCommand = async (command) => {
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="profile" :icon="User"
-                >基本资料</el-dropdown-item
-              >
-              <el-dropdown-item command="avatar" :icon="Crop"
-                >更换头像</el-dropdown-item
-              >
+              <el-dropdown-item command="profile" :icon="User">基本资料</el-dropdown-item>
+              <el-dropdown-item command="avatar" :icon="Crop">更换头像</el-dropdown-item>
               <el-dropdown-item command="password" :icon="EditPen"
                 >重置密码</el-dropdown-item
               >
@@ -121,8 +115,7 @@ const handleCommand = async (command) => {
     background-color: #232323;
     &__logo {
       height: 120px;
-      background: url('@/assets/logo.png') no-repeat center / 120px
-        auto;
+      background: url('@/assets/logo.png') no-repeat center / 120px auto;
     }
     .el-menu {
       border-right: none;
