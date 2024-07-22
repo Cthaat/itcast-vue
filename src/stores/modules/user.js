@@ -18,12 +18,16 @@ export const useUserStore = defineStore(
       const res = await userGetInfoService()
       user.value = res.data.data
     }
+    const setUserInfo = (newUser) => {
+      user.value = newUser
+    }
     return {
       token,
       setToken,
       removeToken,
       user,
-      getUserInfo
+      getUserInfo,
+      setUserInfo
     }
   },
   {
