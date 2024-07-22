@@ -1,8 +1,9 @@
 <script setup>
-import { artGetChannelsService } from '@/api/article'
+import { artDeleteChannelService, artGetChannelsService } from '@/api/article'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 import channelEdit from './components/channelEdit.vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const channels = ref([])
 const loading = ref(false)
@@ -13,10 +14,6 @@ onMounted(async () => {
   await artGetChannelsService()
     .then((res) => {
       channels.value = res.data.data
-      channels.value.push({
-        cate_name: '全部',
-        cate_alias: 'all'
-      })
     })
     .catch((err) => {
       console.log(err)
@@ -28,12 +25,38 @@ const onEditChannel = (row) => {
   dialog.value.open(row)
 }
 
-const onDeleteChannel = (row, $index) => {
-  console.log(row, $index)
+const onDeleteChannel = async (row) => {
+  await ElMessageBox.confirm('确定删除该分类吗？', '提示', {
+    type: 'warning',
+    confirmButtonText: '确定',
+    cancelButtonText: '取消'
+  })
+  artDeleteChannelService(row.id)
+    .then(() => {
+      ElMessage.success('删除成功')
+      onSuccess()
+    })
+    .catch((err) => {
+      console.log(err)
+      ElMessage.error('删除失败')
+      onSuccess()
+    })
 }
 
 const onAddChannel = () => {
   dialog.value.open({})
+}
+
+const onSuccess = async () => {
+  loading.value = true
+  await artGetChannelsService()
+    .then((res) => {
+      channels.value = res.data.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .finally(() => (loading.value = false))
 }
 </script>
 
@@ -69,7 +92,7 @@ const onAddChannel = () => {
           <el-empty description="暂无数据"></el-empty>
         </template>
       </el-table>
-      <channel-edit ref="dialog"></channel-edit>
+      <channel-edit ref="dialog" @success="onSuccess"></channel-edit>
     </template>
   </page-container>
 </template>
