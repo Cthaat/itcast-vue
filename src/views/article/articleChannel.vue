@@ -1,8 +1,75 @@
+<script setup>
+import { artGetChannelsService } from '@/api/article'
+import { Edit, Delete } from '@element-plus/icons-vue'
+import { ref, onMounted } from 'vue'
+import channelEdit from './components/channelEdit.vue'
+
+const channels = ref([])
+const loading = ref(false)
+const dialog = ref()
+
+onMounted(async () => {
+  loading.value = true
+  await artGetChannelsService()
+    .then((res) => {
+      channels.value = res.data.data
+      channels.value.push({
+        cate_name: '全部',
+        cate_alias: 'all'
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .finally(() => (loading.value = false))
+})
+
+const onEditChannel = (row) => {
+  dialog.value.open(row)
+}
+
+const onDeleteChannel = (row, $index) => {
+  console.log(row, $index)
+}
+
+const onAddChannel = () => {
+  dialog.value.open({})
+}
+</script>
+
 <template>
   <page-container title="文章分类">
     <template #extra>
-      <el-button type="primary"> 新增文章 </el-button>
+      <el-button type="primary" @click="onAddChannel"> 新增分类 </el-button>
     </template>
-    <template #main> 主体内容 </template>
+    <template #main>
+      <el-table v-loading="loading" :data="channels" style="width: 100%">
+        <el-table-column type="index" label="序号" width="100"></el-table-column>
+        <el-table-column prop="cate_name" label="分类名称"></el-table-column>
+        <el-table-column prop="cate_alias" label="分类别名"></el-table-column>
+        <el-table-column label="操作" width="100">
+          <template #default="{ row, $index }">
+            <el-button
+              type="primary"
+              circle
+              plain
+              :icon="Edit"
+              @click="onEditChannel(row, $index)"
+            ></el-button>
+            <el-button
+              type="danger"
+              circle
+              plain
+              :icon="Delete"
+              @click="onDeleteChannel(row, $index)"
+            ></el-button>
+          </template>
+        </el-table-column>
+        <template #empty>
+          <el-empty description="暂无数据"></el-empty>
+        </template>
+      </el-table>
+      <channel-edit ref="dialog"></channel-edit>
+    </template>
   </page-container>
 </template>
