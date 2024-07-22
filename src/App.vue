@@ -17,6 +17,7 @@ const counterStore = useCounterStore()
 
 <template>
   <test-demo></test-demo>
+  <test-demo></test-demo>
   <div>
     <el-button @click="goList">Click me</el-button>
     <p>{{ userStore.token }}</p>
