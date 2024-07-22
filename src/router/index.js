@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,7 +19,8 @@ const router = createRouter({
         },
         {
           path: 'article/channel',
-          component: () => import('@/views/article/articleChannel.vue')
+          component: () =>
+            import('@/views/article/articleChannel.vue')
         },
         {
           path: 'user/avatar',
@@ -35,6 +37,14 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+// TODO 登录访问拦截
+router.beforeEach((to) => {
+  const useStore = useUserStore()
+  if (!useStore.token && to.path !== '/login') {
+    return { path: '/login' }
+  }
 })
 
 export default router
