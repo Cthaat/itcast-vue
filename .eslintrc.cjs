@@ -17,7 +17,7 @@ module.exports = {
       {
         singleQuote: true,
         semi: false,
-        printWidth: 100,
+        printWidth: 70,
         trailingComma: 'none',
         endOfLine: 'auto',
         tabWidth: 2
@@ -31,5 +31,10 @@ module.exports = {
     ],
     'vue/no-setup-props-destructure': ['off'],
     'no-undef': 'error'
+  },
+  globals: {
+    ElMessage: 'readonly',
+    ElMessageBox: 'readonly',
+    ElLoading: 'readonly'
   }
 }
