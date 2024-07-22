@@ -17,7 +17,7 @@ import avatar from '@/assets/default.png'
     <el-aside width="200px">
       <div class="el-aside__logo"></div>
       <el-menu
-        active-text-color="#ffd04b"
+        active-text-color="skyblue"
         background-color="#232323"
         :default-active="$route.path"
         text-color="#fff"
