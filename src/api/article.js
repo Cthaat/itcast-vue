@@ -8,3 +8,6 @@ export const artEditChannelService = (data) => request.put('/my/cate/info', data
 
 export const artDeleteChannelService = (id) =>
   request.delete('/my/cate/del/', { params: { id } })
+
+export const artGetArticlesService = (params) =>
+  request.get('/my/article/list', { params })

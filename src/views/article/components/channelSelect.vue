@@ -2,13 +2,14 @@
 import { artGetChannelsService } from '@/api/article'
 import { ref } from 'vue'
 
-const cateID = defineModel('cateID')
+const cateID = defineModel('cateID', {
+  type: [Number, String]
+})
 const channelList = ref([])
 
 const getChannelList = async () => {
   const res = await artGetChannelsService()
   channelList.value = res.data.data
-  console.log(channelList.value)
 }
 
 getChannelList()

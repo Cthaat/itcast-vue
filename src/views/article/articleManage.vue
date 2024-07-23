@@ -2,16 +2,25 @@
 import { Upload, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import channelSelect from './components/channelSelect.vue'
+import { artGetArticlesService } from '@/api/article'
+import { formatDate } from '@/utils/format'
 
-const articleList = ref([
-  {
-    id: 1,
-    title: '如何成为一名优秀的程序员',
-    pub_date: '2021-10-10',
-    state: '已发布',
-    cate_name: '张三'
-  }
-])
+const articleList = ref([])
+const total = ref(0)
+const params = ref({
+  pagenum: 1,
+  pagesize: 5,
+  cateID: '',
+  state: ''
+})
+
+const getArticleList = async () => {
+  const res = await artGetArticlesService(params.value)
+  articleList.value = res.data.data
+  total.value = res.total
+}
+
+getArticleList()
 
 const onUploadArticle = (row) => {
   console.log(row)
@@ -21,7 +30,17 @@ const onDeleteArticle = (row) => {
   console.log(row)
 }
 
-const cateID = ref()
+const addArticle = () => {
+  // TODO 新增文章
+  console.log('新增文章')
+}
+const search = () => {
+  // TODO 按照分类查找
+}
+
+const reset = () => {
+  // TODO 重置条件
+}
 </script>
 <template>
   <page-container title="文章管理">
@@ -31,10 +50,10 @@ const cateID = ref()
     <template #main>
       <el-form inline>
         <el-form-item label="文章分类：">
-          <channelSelect v-model:cateID="cateID"></channelSelect>
+          <channelSelect v-model:cateID="params.cateID"></channelSelect>
         </el-form-item>
         <el-form-item label="发布状态：">
-          <el-select>
+          <el-select v-model="params.state">
             <el-option label="已发布" value="1"></el-option>
             <el-option label="未发布" value="0"></el-option>
           </el-select>
@@ -51,7 +70,11 @@ const cateID = ref()
           </template>
         </el-table-column>
         <el-table-column label="分类" prop="cate_name"></el-table-column>
-        <el-table-column label="发表时间" prop="pub_date"></el-table-column>
+        <el-table-column label="发表时间" prop="pub_date">
+          <template #default="{ row }">
+            {{ formatDate(row.pub_date) }}
+          </template>
+        </el-table-column>
         <el-table-column label="状态" prop="state"></el-table-column>
         <el-table-column label="操作" width="150px">
           <template #default="{ row, $index }">
