@@ -19,8 +19,7 @@ const router = createRouter({
         },
         {
           path: 'article/channel',
-          component: () =>
-            import('@/views/article/articleChannel.vue')
+          component: () => import('@/views/article/articleChannel.vue')
         },
         {
           path: 'user/avatar',

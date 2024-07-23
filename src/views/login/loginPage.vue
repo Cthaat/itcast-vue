@@ -127,21 +127,12 @@ watch(isRegister, () => form.value.resetFields())
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button
-            @click="register()"
-            class="button"
-            type="primary"
-            auto-insert-space
-          >
+          <el-button @click="register()" class="button" type="primary" auto-insert-space>
             注册
           </el-button>
         </el-form-item>
         <el-form-item class="flex">
-          <el-link
-            type="info"
-            :underline="false"
-            @click="isRegister = !isRegister"
-          >
+          <el-link type="info" :underline="false" @click="isRegister = !isRegister">
             ← 返回
           </el-link>
         </el-form-item>
@@ -176,26 +167,16 @@ watch(isRegister, () => form.value.resetFields())
         <el-form-item class="flex">
           <div class="flex">
             <el-checkbox>记住我</el-checkbox>
-            <el-link type="primary" :underline="false"
-              >忘记密码？</el-link
-            >
+            <el-link type="primary" :underline="false">忘记密码？</el-link>
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button
-            @click="login()"
-            class="button"
-            type="primary"
-            auto-insert-space
+          <el-button @click="login()" class="button" type="primary" auto-insert-space
             >登录</el-button
           >
         </el-form-item>
         <el-form-item class="flex">
-          <el-link
-            type="info"
-            :underline="false"
-            @click="isRegister = !isRegister"
-          >
+          <el-link type="info" :underline="false" @click="isRegister = !isRegister">
             注册 →
           </el-link>
         </el-form-item>

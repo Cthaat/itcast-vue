@@ -3,10 +3,15 @@
 
 // const userStore = useUserStore()
 // const counterStore = useCounterStore()
+
+import zhCn from 'element-plus/dist/locale/zh-cn'
+import { ElConfigProvider } from 'element-plus'
 </script>
 
 <template>
-  <router-view></router-view>
+  <el-config-provider :locale="zhCn">
+    <router-view></router-view>
+  </el-config-provider>
 </template>
 
 <style scoped></style>
