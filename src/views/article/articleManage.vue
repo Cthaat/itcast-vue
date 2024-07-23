@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import channelSelect from './components/channelSelect.vue'
 import { artGetArticlesService } from '@/api/article'
 import { formatDate } from '@/utils/format'
+import articleEdit from './components/articleEdit.vue'
 
 const articleList = ref([])
 const total = ref(0)
@@ -13,41 +14,62 @@ const params = ref({
   cateID: '',
   state: ''
 })
+const loading = ref(false)
+const articleEditRef = ref()
 
 const getArticleList = async () => {
+  loading.value = true
   const res = await artGetArticlesService(params.value)
   articleList.value = res.data.data
   total.value = res.data.total
+  loading.value = false
 }
 
 const onSizeChange = (size) => {
-  console.log(size)
+  params.value.pagenum = 1
+  params.value.pagesize = size
+  getArticleList()
 }
 
 const onCurrentChange = (page) => {
-  console.log(page)
+  params.value.pagenum = page
+  getArticleList()
 }
 
 getArticleList()
 
 const onUploadArticle = (row) => {
+  // TODO 上传文章
+  articleEditRef.value.open(row)
   console.log(row)
 }
 
+const onSuccess = () => {
+  // TODO 上传成功
+  getArticleList()
+}
+
 const onDeleteArticle = (row) => {
+  // TODO 删除文章
   console.log(row)
 }
 
 const addArticle = () => {
   // TODO 新增文章
-  console.log('新增文章')
+  articleEditRef.value.open()
 }
 const search = () => {
   // TODO 按照分类查找
+  params.value.pagenum = 1
+  console.log(params.value)
+  getArticleList()
 }
 
 const reset = () => {
   // TODO 重置条件
+  params.value.cateID = ''
+  params.value.state = ''
+  getArticleList()
 }
 </script>
 <template>
@@ -62,8 +84,8 @@ const reset = () => {
         </el-form-item>
         <el-form-item label="发布状态：">
           <el-select v-model="params.state">
-            <el-option label="已发布" value="1"></el-option>
-            <el-option label="未发布" value="0"></el-option>
+            <el-option label="已发布" value="已发布"></el-option>
+            <el-option label="草稿" value="草稿"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -71,7 +93,7 @@ const reset = () => {
           <el-button type="danger" @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
-      <el-table :data="articleList">
+      <el-table v-loading="loading" :data="articleList">
         <el-table-column label="文章标题" prop="title">
           <template #default="{ row }">
             <el-link type="primary" :underline="false">{{ row.title }}</el-link>
@@ -117,6 +139,7 @@ const reset = () => {
         @size-change="onSizeChange"
         @current-change="onCurrentChange"
       />
+      <articleEdit ref="articleEditRef" @success="onSuccess"></articleEdit>
     </template>
   </page-container>
 </template>

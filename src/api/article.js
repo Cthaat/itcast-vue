@@ -11,3 +11,5 @@ export const artDeleteChannelService = (id) =>
 
 export const artGetArticlesService = (params) =>
   request.get('/my/article/list', { params })
+
+export const artAddArticleService = (data) => request.post('/my/article/add', data)
