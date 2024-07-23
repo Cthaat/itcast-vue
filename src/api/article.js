@@ -13,3 +13,6 @@ export const artGetArticlesService = (params) =>
   request.get('/my/article/list', { params })
 
 export const artAddArticleService = (data) => request.post('/my/article/add', data)
+
+export const artGetArticleDetailService = (id) =>
+  request.get('/my/article/info', { params: { id } })

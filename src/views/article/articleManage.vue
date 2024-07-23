@@ -11,7 +11,7 @@ const total = ref(0)
 const params = ref({
   pagenum: 1,
   pagesize: 5,
-  cateID: '',
+  cate_id: '',
   state: ''
 })
 const loading = ref(false)
@@ -44,8 +44,12 @@ const onUploadArticle = (row) => {
   console.log(row)
 }
 
-const onSuccess = () => {
+const onSuccess = (type) => {
   // TODO 上传成功
+  if (type === 'add') {
+    const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
+    params.value.pagenum = lastPage
+  }
   getArticleList()
 }
 
@@ -61,13 +65,12 @@ const addArticle = () => {
 const search = () => {
   // TODO 按照分类查找
   params.value.pagenum = 1
-  console.log(params.value)
   getArticleList()
 }
 
 const reset = () => {
   // TODO 重置条件
-  params.value.cateID = ''
+  params.value.cate_id = ''
   params.value.state = ''
   getArticleList()
 }
@@ -80,7 +83,7 @@ const reset = () => {
     <template #main>
       <el-form inline>
         <el-form-item label="文章分类：">
-          <channelSelect v-model:cateID="params.cateID"></channelSelect>
+          <channelSelect v-model:cateID="params.cate_id"></channelSelect>
         </el-form-item>
         <el-form-item label="发布状态：">
           <el-select v-model="params.state">

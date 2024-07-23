@@ -4,10 +4,12 @@ import channelSelect from './channelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import { artAddArticleService } from '@/api/article'
+import { artAddArticleService, artGetArticleDetailService } from '@/api/article'
+import { baseURL } from '@/utils/request'
 const visibleDrawer = ref(false)
 const imgUrl = ref('')
 const emit = defineEmits(['success'])
+const quillEditorRef = ref()
 
 const defaultModel = ref({
   title: '',
@@ -29,10 +31,21 @@ const rules = {
   cover_img: [{ required: true, message: '请上传文章封面图', trigger: 'blur' }]
 }
 
-const open = (row) => {
+const open = async (row) => {
   visibleDrawer.value = true
   if (row.id) {
-    console.log(row)
+    const res = await artGetArticleDetailService(row.id)
+    const data = res.data.data
+    console.log(data)
+    formModel.value = {
+      title: data.title,
+      cate_id: data.cate_id,
+      content: data.content,
+      cover_img: data.cover_img,
+      state: data.state
+    }
+    quillEditorRef.value.setHTML(data.content)
+    imgUrl.value = baseURL + data.cover_img
   } else {
     formModel.value = { ...defaultModel.value }
   }
@@ -59,6 +72,8 @@ const onPublish = async (state) => {
     .then(() => {
       ElMessage.success('发布成功')
       formModel.value = { ...defaultModel.value }
+      imgUrl.value = ''
+      quillEditorRef.value.setHTML('')
       emit('success', 'add')
     })
     .catch(() => {
@@ -80,6 +95,7 @@ const onPublish = async (state) => {
       <el-form-item label="文章内容" prop="content">
         <div class="editor">
           <QuillEditor
+            ref="quillEditorRef"
             theme="snow"
             v-model:content="formModel.content"
             content-type="html"
