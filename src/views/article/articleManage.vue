@@ -17,7 +17,15 @@ const params = ref({
 const getArticleList = async () => {
   const res = await artGetArticlesService(params.value)
   articleList.value = res.data.data
-  total.value = res.total
+  total.value = res.data.total
+}
+
+const onSizeChange = (size) => {
+  console.log(size)
+}
+
+const onCurrentChange = (page) => {
+  console.log(page)
 }
 
 getArticleList()
@@ -99,6 +107,16 @@ const reset = () => {
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        v-model:current-page="params.pagenum"
+        v-model:page-size="params.pagesize"
+        :page-sizes="[2, 3, 5, 10]"
+        :background="true"
+        layout="jumper, total, sizes, prev, pager, next"
+        :total="total"
+        @size-change="onSizeChange"
+        @current-change="onCurrentChange"
+      />
     </template>
   </page-container>
 </template>
@@ -111,5 +129,12 @@ const reset = () => {
   .el-form-item {
     flex: 1;
   }
+}
+
+.el-pagination {
+  display: flex;
+  margin-top: 20px;
+  flex: 1;
+  justify-content: flex-end;
 }
 </style>
