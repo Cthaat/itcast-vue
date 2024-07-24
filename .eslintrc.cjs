@@ -15,8 +15,8 @@ module.exports = {
     'prettier/prettier': [
       'warn',
       {
-        singleQuote: true,
-        semi: false,
+        singleQuote: true, // 使用单引号
+        semi: false, // 结尾不使用分号
         printWidth: 90,
         trailingComma: 'none',
         endOfLine: 'auto',
